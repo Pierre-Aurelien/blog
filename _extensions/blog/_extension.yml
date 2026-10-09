@@ -1,0 +1,14 @@
+title: Blog components
+author: Pierre-Aurélien Gilliot
+version: 1.0.0
+quarto-required: ">=1.10.0"
+contributes:
+  shortcodes:
+    - shortcodes.lua
+  filters:
+    # Proofs are claimed before Quarto turns them into its own proof nodes.
+    - path: proofs.lua
+      at: pre-ast
+    # Components are built once Quarto has rendered callouts and theorems.
+    - path: components.lua
+      at: post-render

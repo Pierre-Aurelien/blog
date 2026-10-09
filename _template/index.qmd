@@ -1,0 +1,166 @@
+---
+# Copy this folder to posts/<YYYY-MM>-<slug>/ and replace every placeholder.
+# Each component below appears once; delete what the post does not need.
+title: "Paper Title from First Principles"
+subtitle: "One sentence that says what the reader will understand by the end, and on which toy."
+kicker: "Tutorial · Subfield"
+date: 2026-10-09
+# date-modified: 2026-11-02     # set when a revision corrects the post (see the fold below)
+categories: [Subfield]
+---
+
+```{python}
+#| label: setup
+#| include: false
+import sys; sys.path.insert(0, "../../shared")
+from simtools import load_results, fmt, pct, num
+R = load_results()  # sims/results.json, written by the scripts in sims/
+T = R["toy"]
+```
+
+<!-- A revised post opens here with a fold titled "What this revision corrects",
+     its hint giving the date of the revision, saying what changed and why;
+     set date-modified in the front matter too. See CLAUDE.md. -->
+
+::: {.callout-note title="Scope"}
+What the post covers and what it leaves out: the paper (@student1908), the toy it is built on, which results are proved here and which are pointed to. Every number quoted from a toy was produced by the code in this post's `sims/` folder.
+:::
+
+::: {.callout-important title="Five key messages"}
+1. The first thing the reader should remember, stated as a claim.
+2. The second.
+3. The third.
+4. The fourth.
+5. The fifth.
+:::
+
+## A minimal toy {#sec-toy}
+
+{{< question "What does averaging $n$ noisy measurements buy?" >}}
+
+Build the smallest system that shows the phenomenon before touching the real one. Here: each measurement is a standard normal draw, and we average $n$ of them. Over `{python} num(T['reps'])` repetitions, the mean of `{python} num(T['n_ref'])` draws has a spread of `{python} fmt(T['sd'][str(T['n_ref'])], 3)`.
+
+::: {.callout-tip}
+Averaging cancels noise because independent errors point in different directions; their sum grows like $\sqrt{n}$, not like $n$.
+:::
+
+::: {#def-spread}
+## Spread
+The spread of an estimator $\hat\mu$ is its standard deviation over repetitions of the experiment, $\operatorname{sd}(\hat\mu)$.
+:::
+
+::: {#prp-sqrt}
+## The $1/\sqrt{n}$ law
+If $x_1, \dots, x_n$ are independent with variance $\sigma^2$, then $\operatorname{sd}(\bar x) = \sigma / \sqrt{n}$.
+:::
+
+::: {.proof hint="variances of independent terms add"}
+$\operatorname{Var}(\bar x) = \frac{1}{n^2}\sum_i \operatorname{Var}(x_i) = \sigma^2/n$. Take the square root. ∎
+:::
+
+::: {#fig-toy}
+```{=html}
+<div class="fig">
+  <div class="controls">
+    <label>Draws per mean, n <input id="toy-n" type="range" min="0" max="6" step="1" value="4" aria-label="Draws per mean, log scale"> <b id="toy-n-value"></b></label>
+    <div class="seg" id="toy-presets"></div>
+  </div>
+  <div class="panel">
+    <canvas id="toy-canvas" height="240" role="img" aria-label="Histogram of the means of n draws, with the normal curve of standard deviation one over root n"></canvas>
+    <p class="readout" id="toy-readout"></p>
+  </div>
+</div>
+```
+
+The toy of @sec-toy. Teal bars: means of $n$ draws, from the browser's own simulation. Orange: the prediction of @prp-sqrt. Move the slider from $n = 1$ to $n = 64$ and watch the bars stay on the curve as it narrows.
+:::
+
+```{python}
+#| label: tbl-toy
+#| tbl-cap: "Measured spread of the mean against the $1/\\sqrt{n}$ prediction."
+#| output: asis
+rows = ["| $n$ | measured spread | $1/\\sqrt{n}$ |", "|---:|---:|---:|"]
+for n in T["ns"]:
+    rows.append(f"| {n} | {fmt(T['sd'][str(n)], 3)} | {fmt(T['theory'][str(n)], 3)} |")
+print("\n".join(rows))
+```
+
+@tbl-toy shows the measurement within `{python} pct(T['max_rel_dev'])` of the prediction at every $n$ we tried.
+
+::: {#exm-halve}
+## Halving the noise
+To halve the spread of a mean of `{python} num(T['n_ref'])` draws, take `{python} num(T['n_half'])`: the measured ratio of the two spreads is `{python} fmt(T['ratio_ref_half'], 2)`.
+:::
+
+{{< quiz q="Starting from $n$ = `{python} num(T['n_ref'])`, how many draws per mean halve the spread?" a="`{python} num(T['n_half'])`. By @prp-sqrt the spread scales as $1/\sqrt{n}$, so halving it takes four times as many draws; the simulation measures a ratio of `{python} fmt(T['ratio_ref_half'], 2)`." >}}
+
+{{< principle n="1" >}}
+Build the smallest system in which the effect appears, and check the formula against it before trusting either.
+{{< /principle >}}
+
+{{< takeaway >}}
+Noise falls as $1/\sqrt{n}$, so each halving costs four times the data. The next section asks what the paper's system adds to this picture.
+{{< /takeaway >}}
+
+## The real system {#sec-real}
+
+{{< question "What does the paper's setting change?" >}}
+
+Carry the toy over to the paper's system, and say exactly where the analogy breaks. Every claim about the paper points to a table, figure or page [@student1908, p. 1].
+
+::: {#alg-check}
+## How to test the claim
+State the procedure: the data, the comparison, the number that would refute the claim.
+:::
+
+::: {.callout-warning title="Where the law fails"}
+The draws must be independent. Correlated errors do not cancel, and the spread stops falling.
+:::
+
+::: {.callout-caution title="To verify"}
+A figure that could not be checked against the paper or its supplement is marked here, and the pull request lists it.
+:::
+
+{{< fold title="Code" hint="the simulation behind the table" >}}
+```python
+rng = np.random.default_rng(SEED)
+means = rng.standard_normal((REPS, n)).mean(axis=1)
+sd = means.std(ddof=1)
+```
+{{< /fold >}}
+
+::: {#fig-pipeline}
+```{=html}
+<div class="fig"><div class="scroll"><svg viewBox="0 0 640 120" role="img" aria-label="Measurements are averaged into one estimate">
+  <g font-size="15" text-anchor="middle">
+    <rect class="ln ln-t" x="20" y="40" width="150" height="40" rx="3"></rect><text x="95" y="65" class="t-t">n measurements</text>
+    <path class="ln" d="M170 60H250"></path>
+    <rect class="ln ln-o" x="250" y="40" width="140" height="40" rx="3"></rect><text x="320" y="65" class="t-o">average</text>
+    <path class="ln" d="M390 60H470"></path>
+    <rect class="ln ln-w" x="470" y="40" width="150" height="40" rx="3"></rect><text x="545" y="65" class="t-w">one estimate</text>
+    <text x="320" y="24" class="t-m" font-size="13">spread falls as 1/√n</text>
+  </g>
+</svg></div></div>
+```
+
+A static diagram. Captions say what to look at: here, that the only operation between the measurements and the estimate is an average.
+:::
+
+{{< takeaway >}}
+One or two sentences: what the reader now knows that they did not at the start of the section.
+{{< /takeaway >}}
+
+## Thinking principles {#sec-principles}
+
+The principles of this post, in the order they first appeared. They are also collected, with those of other posts, on the [principles page](../../principles.qmd).
+
+1. **Toy first.** Build the smallest system in which the effect appears, and check the formula against it before trusting either (@sec-toy).
+
+## References {.unnumbered}
+
+| source | role in this post |
+|:---|:---|
+| @student1908 | The $1/\sqrt{n}$ law in §1; the setting of §2. |
+
+::: {#refs}
+:::
