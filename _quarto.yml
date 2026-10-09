@@ -1,0 +1,71 @@
+project:
+  type: website
+  output-dir: _site
+  # Render only the site's pages. Everything else (CLAUDE.md, principles.md,
+  # READMEs, _template/) is source material, not a page.
+  render:
+    - index.qmd
+    - principles.qmd
+    - posts/*/index.qmd
+  # The legacy posts are finished, self-contained HTML files: copy them as they are.
+  resources:
+    - legacy/*.html
+
+website:
+  title: "From First Principles"
+  description: "First-principles tutorials on scientific papers, built on toys you can run in the page."
+  site-url: https://pierre-aurelien.github.io/blog/
+  repo-url: https://github.com/Pierre-Aurelien/blog
+  favicon: theme/favicon.svg
+  page-navigation: false
+  navbar:
+    left:
+      - href: index.qmd
+        text: Posts
+      - href: principles.qmd
+        text: Principles
+    tools:
+      - icon: github
+        href: https://github.com/Pierre-Aurelien/blog
+        aria-label: Source on GitHub
+
+author: "Pierre-Aurélien Gilliot"
+date-format: long
+bibliography: shared/refs.bib
+link-citations: true
+
+execute:
+  # Re-run a post's code only when its source changes; _freeze/ is committed.
+  freeze: auto
+
+filters:
+  - blog
+
+language:
+  crossref-alg-title: "Method"
+  crossref-alg-prefix: "Method"
+  callout-note-title: "Note"
+  callout-tip-title: "Intuition"
+  callout-important-title: "Key messages"
+  callout-warning-title: "Pitfall"
+  callout-caution-title: "Caution"
+
+format:
+  html:
+    theme:
+      - theme/tokens.scss
+      - theme/components.scss
+    template-partials:
+      - theme/title-block.html
+    html-math-method: mathjax
+    callout-appearance: default
+    callout-icon: false
+    highlight-style: a11y
+    code-fold: false
+    code-copy: hover
+    anchor-sections: true
+    smooth-scroll: true
+    grid:
+      body-width: 820px
+      sidebar-width: 215px
+      margin-width: 215px

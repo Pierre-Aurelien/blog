@@ -1,0 +1,13 @@
+# Listing entries for the legacy HTML posts. The files themselves are copied
+# into _site unchanged (see `resources` in _quarto.yml).
+- title: "JEPA and LeJEPA from First Principles"
+  subtitle: "Why predicting representations beats predicting inputs when most of the input is noise, why that idea collapses without help, and how LeJEPA repairs it with one extra loss term."
+  date: 2026-09-18
+  categories: [Self-supervised learning]
+  path: legacy/2026-09-jepa-lejepa.html
+
+- title: "Modern Hopfield Networks for Multiple Instance Learning"
+  subtitle: "From an energy function to attention, from attention to pooling a million instances, and what that pooling can and cannot see."
+  date: 2026-09-18
+  categories: [Associative memory, Multiple instance learning]
+  path: legacy/2026-09-hopfield-mil.html

@@ -1,0 +1,11 @@
+# Defaults for every post in posts/<YYYY-MM>-<slug>/index.qmd.
+toc: true
+toc-location: left
+toc-title: Contents
+toc-depth: 2
+number-sections: true
+number-depth: 2  # posts start at ##, so the §n sections are depth 2
+jupyter: python3
+execute:
+  echo: false
+  warning: false

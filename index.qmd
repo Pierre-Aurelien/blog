@@ -1,0 +1,15 @@
+---
+title: "From First Principles"
+subtitle: "Tutorials on one scientific paper at a time, for a technically strong reader who is new to the subfield. Each one builds the idea on a toy that runs in the page before it touches the real system."
+listing:
+  contents:
+    - posts/*/index.qmd
+    - legacy/listing.yml
+  sort: "date desc"
+  type: default
+  categories: false
+  date-format: long
+  fields: [date, title, subtitle, categories]
+  feed: false
+page-layout: article
+---

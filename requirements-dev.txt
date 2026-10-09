@@ -1,0 +1,3 @@
+# Local checks only (screenshots); not needed to render.
+-r requirements.txt
+playwright==1.63.0

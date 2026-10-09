@@ -1,0 +1,947 @@
+/*-- scss:rules --*/
+
+// Components, ported from the legacy posts.
+//
+// Box colour encodes the family:
+//   teal    concepts         definition, intuition, scope
+//   wine    formal results   theorem, proposition, lemma, corollary; pitfalls
+//   orange  applications     worked examples, key messages, takeaways
+//   ink     procedures       methods
+// A solid border marks established material; a dashed one informal material
+// or a caution.
+
+// ---- Page and type ---------------------------------------------------------
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-text-size-adjust: 100%;
+}
+
+main.content {
+  font-size: 1.16rem;
+  line-height: 1.7;
+}
+
+a {
+  color: var(--teal);
+  text-underline-offset: 0.16em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--teal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+main.content p {
+  margin: 0 0 1.15em;
+}
+
+.kicker {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+}
+
+#title-block-header.quarto-title-block.default {
+  margin-bottom: 2.4rem;
+}
+
+#title-block-header.quarto-title-block.default .quarto-title h1.title,
+main.content h1.title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.1rem;
+  color: var(--ink);
+}
+
+#title-block-header .subtitle,
+#title-block-header p.subtitle.lead {
+  font-family: var(--serif);
+  font-size: 1.32rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--muted);
+  margin: 0;
+}
+
+main.content h2 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  margin: 3.6rem 0 1.2rem;
+  padding: 3.6rem 0 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+  color: var(--ink);
+}
+
+main.content h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1.18rem;
+  line-height: 1.3;
+  margin: 2.4rem 0 0.8rem;
+  color: var(--ink);
+}
+
+// §n. before each numbered section, in wine.
+main.content h2 .header-section-number {
+  color: var(--wine);
+  margin-right: 0.35em;
+}
+
+main.content h2 .header-section-number::before,
+#TOC .header-section-number::before {
+  content: "§";
+}
+
+main.content h2 .header-section-number::after {
+  content: ".";
+}
+
+#TOC .header-section-number::after {
+  content: " ·";
+}
+
+// ---- Navbar, table of contents, footer -------------------------------------
+
+#quarto-header .navbar {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--sans);
+}
+
+#quarto-header .navbar .navbar-title,
+#quarto-header .navbar .navbar-brand {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+#quarto-header .navbar .nav-link,
+#quarto-header .navbar .quarto-navigation-tool,
+#quarto-header .navbar .navbar-toggler {
+  color: var(--muted);
+}
+
+#quarto-header .navbar .nav-link:hover,
+#quarto-header .navbar .nav-link.active,
+#quarto-header .navbar .quarto-navigation-tool:hover {
+  color: var(--ink);
+}
+
+.blog-theme-toggle {
+  background: transparent;
+  border: 0;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#TOC,
+nav#TOC {
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+#TOC #toc-title,
+#toc-title {
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.7rem;
+}
+
+#TOC ul {
+  border-left: 1px solid var(--line);
+}
+
+#TOC a.nav-link {
+  color: var(--muted);
+  padding: 0.3rem 0 0.3rem 0.9rem;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+}
+
+#TOC a.nav-link:hover {
+  color: var(--ink);
+}
+
+// Quarto marks the active entry with !important; so must we.
+#TOC a.nav-link.active {
+  color: var(--ink) !important;
+  border-left: 2px solid var(--wine) !important;
+  font-weight: 500;
+}
+
+#quarto-sidebar.sidebar,
+#quarto-margin-sidebar.sidebar {
+  background: var(--bg);
+}
+
+.nav-footer,
+footer.footer {
+  background: var(--bg);
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+}
+
+// ---- Boxes: shared frame ---------------------------------------------------
+
+// Quarto's theorem environments and the quiz box draw the same frame as the
+// callouts below; --role picks the colour.
+.bx,
+.theorem {
+  --role: var(--ink);
+  margin: 1.7rem 0;
+  padding: 0.95rem 1.15rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--role) 42%, var(--line));
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.bx > :last-child,
+.theorem > :last-child {
+  margin-bottom: 0;
+}
+
+.bx .lab,
+.theorem .theorem-title {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  font-style: normal;
+  color: var(--role);
+  margin: 0 0 0.3rem;
+}
+
+// Concepts: teal.
+div.theorem.definition {
+  --role: var(--teal);
+  background: color-mix(in srgb, var(--teal) 7%, var(--bg));
+}
+
+// Formal results: wine. Quarto gives a theorem the bare class "theorem",
+// so wine is the default and the other environments override it.
+.theorem {
+  --role: var(--wine);
+}
+
+// Worked examples: orange.
+div.theorem.example,
+div.theorem.exercise {
+  --role: var(--orange);
+  background: color-mix(in srgb, var(--orange) 7%, var(--bg));
+}
+
+// Methods: ink.
+div.theorem.algorithm {
+  --role: var(--ink);
+}
+
+// ---- Callouts --------------------------------------------------------------
+
+// Quarto's callouts, redrawn as legacy boxes: no coloured bar, no icon, no
+// header band, body text at full size. The "main div.callout.callout" prefix
+// outranks Quarto's own callout rules.
+main div.callout.callout {
+  --role: var(--ink);
+  margin: 1.7rem 0;
+  padding: 0.95rem 1.15rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--role) 42%, var(--line));
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: none;
+  color: var(--ink);
+  font-size: inherit;
+}
+
+main div.callout.callout > .callout-header {
+  display: block;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.3rem;
+  opacity: 1;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: var(--role);
+}
+
+main div.callout.callout .callout-icon-container {
+  display: none;
+}
+
+main div.callout.callout .callout-title-container {
+  padding: 0;
+  margin: 0;
+  color: var(--role);
+}
+
+main div.callout.callout .callout-body,
+main div.callout.callout .callout-body-container {
+  display: block;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+main div.callout.callout .callout-body > :first-child,
+main div.callout.callout .callout-body-container > :first-child {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+main div.callout.callout .callout-body > :last-child,
+main div.callout.callout .callout-body-container > :last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+// Scope and concepts (note): teal, solid.
+main div.callout.callout-note {
+  --role: var(--teal);
+}
+
+// Intuition (tip): teal, dashed.
+main div.callout.callout-tip {
+  --role: var(--teal);
+  border-style: dashed;
+  background: transparent;
+}
+
+// Key messages (important): orange, solid.
+main div.callout.callout-important {
+  --role: var(--orange);
+  background: color-mix(in srgb, var(--orange) 7%, var(--bg));
+}
+
+// Pitfalls (warning): wine, dashed.
+main div.callout.callout-warning {
+  --role: var(--wine);
+  border-style: dashed;
+  background: transparent;
+}
+
+// Cautions and "to verify" (caution): orange, dashed.
+main div.callout.callout-caution {
+  --role: var(--orange);
+  border-style: dashed;
+  background: transparent;
+}
+
+main div.callout ol,
+main div.callout ul,
+.theorem ol,
+.theorem ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.3rem;
+}
+
+main div.callout li,
+.theorem li {
+  margin: 0 0 0.45em;
+}
+
+main div.callout li::marker,
+.theorem li::marker {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.9em;
+}
+
+// ---- "The question" --------------------------------------------------------
+
+.q {
+  margin: -0.1rem 0 1.6rem;
+}
+
+.q > p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  font-style: italic;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.q .lab {
+  display: block;
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.2rem;
+}
+
+// ---- Takeaway --------------------------------------------------------------
+
+.take {
+  margin: 2.2rem 0 0.4rem;
+  padding: 0.85rem 0 0;
+  border-top: 2px solid var(--orange);
+}
+
+.take > :last-child {
+  margin-bottom: 0;
+}
+
+.take p {
+  margin: 0;
+}
+
+.take .lab {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.84rem;
+  color: var(--orange);
+  margin: 0 0 0.25rem;
+}
+
+// ---- Check yourself --------------------------------------------------------
+
+.bx.quiz {
+  --role: var(--teal);
+  border-style: dashed;
+  background: transparent;
+}
+
+.bx.quiz details.tog {
+  margin: 0.8rem 0 0;
+  background: transparent;
+}
+
+// ---- Thinking principle ----------------------------------------------------
+
+.pcall {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin: 1.3rem 0 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pcall .pn {
+  flex: none;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--wine);
+  color: var(--wine);
+  font-weight: 600;
+  font-size: 0.84rem;
+  line-height: 1.45rem;
+  text-align: center;
+}
+
+.pcall .pt {
+  min-width: 0;
+  padding-top: 0.08rem;
+}
+
+.pcall .pt > :last-child {
+  margin-bottom: 0;
+}
+
+.pcall .pt p {
+  margin: 0;
+}
+
+.pcall .lab {
+  color: var(--wine);
+  font-weight: 600;
+  margin-right: 0.4em;
+}
+
+// ---- Folds -----------------------------------------------------------------
+
+details.tog {
+  margin: 1.2rem 0 1.7rem;
+  border: 1px dashed color-mix(in srgb, var(--muted) 60%, transparent);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+details.tog > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.55rem;
+  padding: 0.6rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  border-radius: 10px;
+}
+
+details.tog > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.tog > summary::before {
+  content: "";
+  align-self: center;
+  flex: none;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-right: 1.6px solid var(--muted);
+  border-bottom: 1.6px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+  margin: 0 0.25rem 0 0.05rem;
+}
+
+details.tog[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+details.tog > summary:hover .tl {
+  color: var(--teal);
+}
+
+details.tog .tl {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+details.tog .th {
+  color: var(--muted);
+  min-width: 0;
+}
+
+details.tog > .tb {
+  padding: 0.35rem 1.15rem 1rem;
+  border-top: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+details.tog > .tb > :last-child {
+  margin-bottom: 0;
+}
+
+details.tog > .tb > pre,
+details.tog > .tb > div.sourceCode {
+  margin: 0.9rem 0;
+}
+
+details.tog > .tb figure {
+  margin: 1.2rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.tog > summary::before {
+    transition: none;
+  }
+}
+
+// A proof hangs from the box above it.
+.theorem + details.pf,
+.bx + details.pf,
+main div.callout + details.pf {
+  margin-top: -1.75rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.theorem:has(+ details.pf),
+.bx:has(+ details.pf),
+main div.callout.callout:has(+ details.pf) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.foldbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+  margin: 0 0 2.2rem;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.foldbar span {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+// ---- Buttons and controls --------------------------------------------------
+
+.fig button,
+.foldbar button {
+  font: inherit;
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.32rem 0.75rem;
+  cursor: pointer;
+}
+
+.fig button:hover,
+.foldbar button:hover {
+  border-color: var(--muted);
+}
+
+.fig button[aria-pressed="true"] {
+  border-color: var(--wine);
+  color: var(--wine);
+  font-weight: 500;
+}
+
+.fig button.primary {
+  background: var(--wine);
+  border-color: var(--wine);
+  color: var(--bg);
+  font-weight: 500;
+}
+
+// ---- Figures and widgets ---------------------------------------------------
+
+.fig {
+  text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.1rem 1.1rem 0.9rem;
+}
+
+.fig .scroll {
+  overflow-x: auto;
+}
+
+.fig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 600px;
+}
+
+.fig svg text {
+  font-family: var(--sans);
+  fill: var(--ink);
+}
+
+.panel {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  align-items: start;
+}
+
+.panel canvas {
+  width: 100%;
+  display: block;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.1rem;
+  align-items: center;
+  margin: 0 0 0.9rem;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.controls input[type="range"] {
+  accent-color: var(--wine);
+  width: 11rem;
+  max-width: 100%;
+}
+
+.seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.readout {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0.7rem 0 0;
+}
+
+.readout b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+// SVG strokes and labels by role.
+.ln { stroke: var(--ink); fill: none; stroke-width: 1.5; stroke-linecap: round; }
+.ln-m { stroke: var(--muted); }
+.ln-t { stroke: var(--teal); }
+.ln-o { stroke: var(--orange); }
+.ln-w { stroke: var(--wine); }
+.fig svg .t-m { fill: var(--muted); }
+.fig svg .t-t { fill: var(--teal); }
+.fig svg .t-o { fill: var(--orange); }
+.fig svg .t-w { fill: var(--wine); }
+.bx-t { fill: color-mix(in srgb, var(--teal) 13%, transparent); }
+.bx-o { fill: color-mix(in srgb, var(--orange) 14%, transparent); }
+.bx-w { fill: color-mix(in srgb, var(--wine) 12%, transparent); }
+.dots { fill: var(--ink); opacity: 0.6; }
+
+figure,
+.quarto-float {
+  margin: 2.2rem 0;
+}
+
+main figcaption,
+main .figure-caption,
+main .quarto-float-caption,
+main figcaption.quarto-float-caption-top,
+main figcaption.quarto-float-caption-bottom {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+
+main figcaption b,
+main .quarto-float-caption b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+main figcaption.quarto-float-caption-top {
+  margin: 0 0 0.6rem;
+}
+
+// ---- Tables, code, maths ---------------------------------------------------
+
+main.content table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+main.content th,
+main.content td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+main.content th {
+  font-weight: 600;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+// Bootstrap's .table and .table-striped paint compiled colours: neutralise.
+main.content .table > :not(caption) > * > * {
+  --bs-table-bg-type: transparent;
+  --bs-table-accent-bg: transparent;
+  --bs-table-color-type: var(--ink);
+  background-color: transparent;
+  color: var(--ink);
+  border-bottom-color: var(--line);
+}
+
+main.content .table > thead > tr > th {
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.tw {
+  overflow-x: auto;
+  margin: 1.6rem 0 2rem;
+}
+
+div.sourceCode,
+pre:not(.sourceCode) {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+pre:not(.sourceCode) {
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+}
+
+div.sourceCode pre.sourceCode {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 1rem 1.1rem;
+  color: var(--ink);
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--ink);
+}
+
+main p code:not(.sourceCode),
+main li code:not(.sourceCode),
+main td code:not(.sourceCode) {
+  background: transparent;
+  padding: 0;
+  color: var(--ink);
+}
+
+// Syntax colours from the palette, so code follows the theme.
+main div.sourceCode code { color: var(--ink); }
+main div.sourceCode code span { color: inherit; }
+main div.sourceCode code span.kw, main div.sourceCode code span.cf, main div.sourceCode code span.im { color: var(--wine); font-weight: 500; }
+main div.sourceCode code span.dv, main div.sourceCode code span.fl, main div.sourceCode code span.bn, main div.sourceCode code span.dec, main div.sourceCode code span.cn { color: var(--orange); }
+main div.sourceCode code span.st, main div.sourceCode code span.ch, main div.sourceCode code span.ss, main div.sourceCode code span.vs, main div.sourceCode code span.sc { color: var(--teal); }
+main div.sourceCode code span.co, main div.sourceCode code span.cv, main div.sourceCode code span.do, main div.sourceCode code span.an, main div.sourceCode code span.in { color: var(--muted); font-style: italic; }
+main div.sourceCode code span.op, main div.sourceCode code span.ot, main div.sourceCode code span.pp { color: var(--muted); }
+
+.code-copy-button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+}
+
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+mjx-container[display="true"] {
+  margin: 1.1em 0 !important;
+}
+
+// ---- Post listing ----------------------------------------------------------
+
+.quarto-listing-default div.quarto-post {
+  padding: 1.5rem 0;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  gap: 0.2rem 1.6rem;
+}
+
+.quarto-listing-default div.quarto-post .metadata {
+  flex: 0 0 9rem;
+  margin-top: 0;
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  padding-top: 0.25rem;
+}
+
+.quarto-listing-default div.quarto-post .metadata a,
+.quarto-listing-default .listing-date {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.quarto-listing-default div.quarto-post .body h3.listing-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin: 0 0 0.4rem;
+}
+
+.quarto-listing-default div.quarto-post .body h3.listing-title a {
+  font-weight: inherit;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.quarto-listing-default div.quarto-post .body h3.listing-title a:hover {
+  color: var(--teal);
+}
+
+.quarto-listing-default div.quarto-post .listing-subtitle,
+.quarto-listing-default div.quarto-post .listing-subtitle a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.quarto-listing-default div.quarto-post .listing-categories {
+  margin-top: 0.55rem;
+}
+
+.quarto-listing-default div.quarto-post .listing-categories .listing-category {
+  font-family: var(--sans);
+  text-transform: none;
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+}
+
+// ---- Narrow screens --------------------------------------------------------
+
+@media (max-width: 560px) {
+  main.content {
+    font-size: 1.06rem;
+  }
+
+  #quarto-header .navbar .navbar-title {
+    font-size: 1rem;
+  }
+
+  .quarto-listing-default div.quarto-post {
+    flex-direction: column-reverse;
+  }
+
+  .quarto-listing-default div.quarto-post .metadata {
+    flex-basis: auto;
+    padding-top: 0;
+  }
+
+  #title-block-header .subtitle {
+    font-size: 1.15rem;
+  }
+}

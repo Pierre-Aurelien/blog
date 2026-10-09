@@ -1,0 +1,114 @@
+/*-- scss:defaults --*/
+
+// Palette and type, ported from the legacy posts (legacy/*.html).
+//
+// At run time the CSS custom properties in the rules section are the source
+// of truth: they switch for dark mode. The Sass copies here exist only
+// because Bootstrap does its colour maths at compile time and cannot read a
+// var(). Change a colour in both places.
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&display=swap");
+
+$blog-bg: #fdfcfa;
+$blog-ink: #1d2330;
+$blog-muted: #5d6678;
+$blog-line: #e3e0d7;
+$blog-panel: #f6f4ee;
+$blog-teal: #0d7377;
+$blog-orange: #c4570f;
+$blog-wine: #8c1d40;
+
+$font-family-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+$font-family-sans-serif: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-family-monospace: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+$font-family-base: $font-family-serif;
+$headings-font-family: $font-family-sans-serif;
+$headings-font-weight: 600;
+$toc-font-size: 0.86rem;
+$sidebar-font-size: 0.86rem;
+
+$body-bg: $blog-bg;
+$body-color: $blog-ink;
+$body-secondary-color: $blog-muted;
+$link-color: $blog-teal;
+$link-decoration: underline;
+$primary: $blog-wine;
+$secondary: $blog-muted;
+$border-color: $blog-line;
+$code-color: $blog-ink;
+$code-block-bg: $blog-panel;
+$code-block-border-left: false;
+$navbar-bg: $blog-bg;
+$navbar-fg: $blog-muted;
+$navbar-hl: $blog-ink;
+$footer-bg: $blog-bg;
+$footer-fg: $blog-muted;
+$table-border-color: $blog-line;
+$text-muted: $blog-muted;
+
+/*-- scss:rules --*/
+
+:root {
+  --bg: #{$blog-bg};
+  --ink: #{$blog-ink};
+  --muted: #{$blog-muted};
+  --line: #{$blog-line};
+  --panel: #{$blog-panel};
+  --teal: #{$blog-teal};
+  --orange: #{$blog-orange};
+  --wine: #{$blog-wine};
+  // inspect() keeps the quotes: unquoted, "Source Serif 4" is not a valid family name.
+  --serif: #{inspect($font-family-serif)};
+  --sans: #{inspect($font-family-sans-serif)};
+  --mono: #{inspect($font-family-monospace)};
+  color-scheme: light;
+}
+
+// Dark mode follows the reader's system setting, unless the page's
+// data-theme attribute says otherwise (the navbar switch sets it).
+@mixin blog-dark {
+  --bg: #12161d;
+  --ink: #e6e8ec;
+  --muted: #9aa4b5;
+  --line: #2a313d;
+  --panel: #1a2029;
+  --teal: #55c5c9;
+  --orange: #f0a35e;
+  --wine: #f08aa8;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include blog-dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include blog-dark;
+}
+
+// Point Bootstrap's run-time variables at the tokens, so that everything
+// Bootstrap and Quarto draw follows the theme too.
+:root {
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink);
+  --bs-emphasis-color: var(--ink);
+  --bs-secondary-color: var(--muted);
+  --bs-tertiary-color: var(--muted);
+  --bs-secondary-bg: var(--panel);
+  --bs-tertiary-bg: var(--panel);
+  --bs-border-color: var(--line);
+  --bs-heading-color: var(--ink);
+  --bs-code-color: var(--ink);
+  --bs-link-color: var(--teal);
+  --bs-link-hover-color: var(--teal);
+  --bs-table-color: var(--ink);
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--line);
+  --quarto-body-bg: var(--bg);
+  --quarto-body-color: var(--ink);
+  --quarto-text-muted: var(--muted);
+  --quarto-border-color: var(--line);
+  --quarto-hl-fg: var(--ink);
+}

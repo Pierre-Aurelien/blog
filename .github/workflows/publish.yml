@@ -1,0 +1,78 @@
+name: Publish
+
+# Pull requests: render the whole site as a check and upload _site to preview.
+# Pushes to main: render and publish to the gh-pages branch.
+# Posts are frozen (_freeze/, committed), so only posts whose source changed
+# re-run their Python; the environment below is pinned for those.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  QUARTO_VERSION: 1.10.18
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install Python requirements
+        run: pip install -r requirements.txt
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ env.QUARTO_VERSION }}
+
+      - name: Render and check cross-references and citations
+        run: bash tools/check_render.sh
+
+      - name: Upload the rendered site for preview
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-preview
+          path: _site
+          retention-days: 14
+
+  publish:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install Python requirements
+        run: pip install -r requirements.txt
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ env.QUARTO_VERSION }}
+
+      - name: Render and publish to gh-pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

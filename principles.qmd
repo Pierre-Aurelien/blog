@@ -1,0 +1,7 @@
+---
+title: "Thinking principles"
+subtitle: "The habits of thought the posts use, collected across posts in the order they first appeared."
+page-layout: article
+---
+
+{{< include principles.md >}}
