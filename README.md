@@ -11,3 +11,24 @@ quarto preview
 ```
 
 Pushing to `main` renders the site and publishes it to the `gh-pages` branch. Pull requests are rendered as a check, and the rendered site is attached to the run as the `site-preview` artifact.
+
+## Previewing a pull request before merging
+
+Previews are private: nothing is published until the pull request is merged. Use either of these.
+
+**Render the branch locally.**
+
+```sh
+git fetch origin && git checkout <branch>
+export QUARTO_PYTHON="$PWD/.venv/bin/python"
+quarto preview          # opens the site in your browser and reloads on every edit
+```
+
+**Or open what CI rendered.** On the pull request, open the "Publish" check, then "Summary", and download the `site-preview` artifact at the bottom of the page. With the GitHub CLI, run `gh run download --name site-preview --dir site-preview`. Then serve the folder, because the pages do not work when opened directly as files:
+
+```sh
+unzip -o site-preview.zip -d site-preview   # skip if gh already unpacked it
+python3 -m http.server --directory site-preview 8000
+```
+
+and open http://localhost:8000.
